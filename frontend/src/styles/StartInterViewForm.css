@@ -1,0 +1,91 @@
+.start-form-container {
+  max-width: 600px;
+  margin: auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.instructions {
+  margin-bottom: 25px;
+}
+
+.instructions h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.instructions ul {
+  padding-left: 20px;
+  color: #333;
+}
+
+.instructions ul li {
+  margin-bottom: 8px;
+}
+
+.start-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.start-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.start-btn {
+  background-color: #2e89ff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.start-btn:hover {
+  background-color: #1a6fe0;
+}
+.input-group{
+    display: flex;
+    align-items: center;
+    border: 2px solid #d1d5db;
+    border-radius:6px ;
+    padding: 0.5rem 1rem;
+}
+.input-group input{
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    background: transparent;
+    font-size: 0.9rem;
+}
+.input-group:hover{
+    border-color: #1e1616;
+}
+textarea{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+    resize: vertical;
+  height: 80px;
+
+}
+.timer {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #ff5722;
+  font-size: 18px;
+}

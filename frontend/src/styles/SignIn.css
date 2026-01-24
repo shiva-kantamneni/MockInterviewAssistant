@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .signin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+  }
+  
+  .signin-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 380px;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subtitle {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .input-label {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-label span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .input-group .icon {
+    color: #9ca3af;
+    margin-right: 0.5rem;
+  }
+  
+  .input-group input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    background: transparent;
+    font-size: 0.9rem;
+  }
+  
+  .signin-button {
+    width: 100%;
+    padding: 0.6rem;
+    background-color: rgb(82, 143, 82);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 1rem;
+  }
+  
+  .signin-button:hover {
+    background-color: #175f37;
+  }
+  
+  .footer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  
+  .signup-link {
+    color: #2acf5c;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .signup-link:hover {
+    text-decoration: underline;
+  }
+  .google-button{
+    width: 100%;
+    padding: 0.6rem;
+    text-align: center;
+    background-color: #98daa4;
+    color: #eef2f3;
+    border:none;
+    border-radius: 9999px;
+    gap:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .google-button:hover{
+    background-color: #38ac6c;
+  }
+  
