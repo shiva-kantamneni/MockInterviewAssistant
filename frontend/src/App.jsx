@@ -6,7 +6,10 @@ import SignIn from './SignIn';
 import Dashboard from './Dashboard';
 import StartInterviewForm from './StartInterviewForm';
 import InterviewApp from './Interview';
-
+import ChatScreen from './ChatScreen';
+import ExperiencePage from './ExperiencePage';
+import ProfilePage from './ProfilePage';
+import ShareExperiencePage from './Shareexperiencepage';
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +19,10 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/startInterview' element={<StartInterviewForm />} />
         <Route path='/interview' element={<InterviewApp />} />
+        <Route path='/chat' element={<ChatScreen/>}/>
+        <Route path='/experience' element={<ExperiencePage/>}/>
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path='/shareExperience' element={<ShareExperiencePage/>}/>
       </Routes>
     </BrowserRouter>
   );
