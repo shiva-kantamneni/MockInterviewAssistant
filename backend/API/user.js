@@ -2,18 +2,21 @@ const express = require('express');
 const router = express.Router();
 const User = require('./../Models/user');
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
 
 
 // SIGN UP
 router.post('/signup', async (req, res) => {
     console.log('hi');
     try {
-        let { email, password } = req.body;
+        let {name,email, password } = req.body;
 
-        
+        name=name.trim();
         email=email.trim();
         password=password.trim();
-        if (!email || !password) {
+        if (!name || !email || !password) {
             return res.status(401).json({
                 status: "Failed",
                 message: "Empty input fields"
@@ -33,12 +36,13 @@ router.post('/signup', async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const newUser = new User({
+            name,
             email,
             password: hashedPassword
         });
 
         const savedUser = await newUser.save();
-        res.status(201).json({
+        res.status(200).json({
             status: "Success",
             message: "Signup successful",
             data: savedUser
@@ -75,20 +79,27 @@ router.post('/signin', async (req, res) => {
             });
         }
         const hashPass=existingUser.password;
-        bcrypt.compare(password,hashPass).then(result=>{
-            if(result){
-                res.status(201).json({
-                    status:'Success',
-                    message:'signin successful',
+        const isMatch = await bcrypt.compare(password, hashPass);
+        if (!isMatch) {
+            return res.status(400).json({
+                status: "Failed",
+                message: "Invalid password entered"
+            });
+        }
+        const token = jwt.sign(
+            { 
+                userId: existingUser._id,
+                email: existingUser.email,
+                name:existingUser.name
+            },
+            process.env.JWT_SECRET, 
+            { expiresIn: "1h" }  
+        );
 
-                })
-            }else{
-                res.status(400).json({
-                    status:'Failed',
-                    message:'Invalid password entered',
-
-                })
-            }
+        res.status(201).json({
+            status: "Success",
+            message: "Signin successful",
+            token: token
         })
     }catch (error) {
         console.error(" Error in signin:", error);

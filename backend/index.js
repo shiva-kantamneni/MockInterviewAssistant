@@ -7,7 +7,7 @@ const PORT = process.env.port || 5000;
 
 const UserRouter=require('./API/user');
 const ChatRouter=require('./API/chatbot');
-
+const ShareRouter=require('./API/shareExperience');
 
 
 
@@ -23,6 +23,7 @@ app.use(cors(
 
 app.use('/user',UserRouter);
 app.use('/interview',ChatRouter);
+app.use('/shareEx',ShareRouter);
 app.listen(PORT,()=>{
     console.log("server is running");
 })
