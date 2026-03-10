@@ -11,14 +11,21 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google-cloud/speech": "^7.3.0",
+    "@google/genai": "^1.44.0",
+    "@google/generative-ai": "^0.24.1",
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.11.0",
     "mongoose": "^8.15.1",
-    "multer": "^2.0.0"
+    "multer": "^2.1.1",
+    "openai": "^6.26.0",
+    "pdf-parse": "^1.1.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

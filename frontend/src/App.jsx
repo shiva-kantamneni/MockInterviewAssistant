@@ -10,6 +10,7 @@ import ChatScreen from './ChatScreen';
 import ExperiencePage from './ExperiencePage';
 import ProfilePage from './ProfilePage';
 import ShareExperiencePage from './Shareexperiencepage';
+import SessionHistory from './SessionHistory';
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ function App() {
         <Route path='/experience' element={<ExperiencePage/>}/>
         <Route path="/profile" element={<ProfilePage />} />
         <Route path='/shareExperience' element={<ShareExperiencePage/>}/>
+        <Route path='/sessionHistory' element={<SessionHistory/>}/>
       </Routes>
     </BrowserRouter>
   );

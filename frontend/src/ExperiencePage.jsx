@@ -2,18 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// Schema: name(opt), company*, role*, topic*, difficulty*, experienceText*
-const EMPTY_FORM = {
-  name:           "",
-  company:        "",
-  role:           "",
-  topic:          "",
-  difficulty:     "",
-  experienceText: "",
-};
-
-const REQUIRED_KEYS = ["company", "role", "topic", "difficulty", "experienceText"];
-
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -129,8 +117,46 @@ const styles = `
   .likes-btn { display: flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--card-border); border-radius: 20px; padding: 5px 12px; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.18s; }
   .likes-btn:hover { border-color: var(--rose); color: var(--rose); }
   .likes-btn.liked { border-color: var(--rose); color: var(--rose); background: rgba(244,114,182,0.08); }
-  .read-more { font-size: 12px; color: var(--accent); font-weight: 500; cursor: pointer; transition: color 0.15s; }
+  .read-more { font-size: 12px; color: var(--accent); font-weight: 500; cursor: pointer; transition: color 0.15s; background: none; border: none; font-family: 'Outfit', sans-serif; padding: 0; }
   .read-more:hover { color: var(--accent2); }
+
+  /* Detail Modal */
+  .detail-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.78); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: overlayIn 0.25s ease; }
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+  .detail-modal { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); width: 100%; max-width: 620px; max-height: 88vh; overflow-y: auto; position: relative; animation: modalUp 0.3s cubic-bezier(0.34,1.3,0.64,1); }
+  @keyframes modalUp { from { opacity: 0; transform: translateY(32px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .detail-modal-bar { height: 3px; border-radius: var(--radius) var(--radius) 0 0; }
+  .bar-blue   { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .bar-violet { background: linear-gradient(90deg, var(--accent2), var(--rose)); }
+  .bar-green  { background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+  .bar-gold   { background: linear-gradient(90deg, var(--gold), var(--rose)); }
+
+  .detail-modal-header { padding: 22px 26px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--card-border); }
+  .detail-modal-user { display: flex; align-items: center; gap: 12px; }
+  .detail-avatar-lg { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: white; flex-shrink: 0; }
+  .detail-name { font-size: 15px; font-weight: 600; }
+  .detail-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .detail-close { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--surface2); color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+  .detail-close:hover { border-color: var(--danger); color: var(--danger); }
+
+  .detail-modal-body { padding: 24px 26px 28px; }
+  .detail-meta-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .detail-role { font-size: 14px; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 6px; }
+  .detail-company { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .detail-company::before { content: '·'; color: rgba(255,255,255,0.15); }
+  .detail-diff-tag { padding: 3px 11px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .detail-topic-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 20px; background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.2); font-size: 12px; color: var(--accent2); font-weight: 500; margin-bottom: 20px; }
+
+  .detail-section-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .detail-section-label::after { content: ''; flex: 1; height: 1px; background: var(--card-border); }
+  .detail-experience-text { font-size: 14.5px; line-height: 1.85; color: #c8d0e0; white-space: pre-wrap; }
+
+  .detail-modal-footer { padding: 16px 26px 22px; border-top: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; }
+  .detail-likes-btn { display: flex; align-items: center; gap: 7px; background: transparent; border: 1px solid var(--card-border); border-radius: 20px; padding: 7px 16px; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.18s; }
+  .detail-likes-btn:hover { border-color: var(--rose); color: var(--rose); }
+  .detail-likes-btn.liked { border-color: var(--rose); color: var(--rose); background: rgba(244,114,182,0.08); }
+  .detail-quote-deco { font-family: 'Playfair Display', serif; font-size: 56px; color: rgba(79,142,247,0.08); line-height: 1; user-select: none; }
 
   /* Empty state */
   .empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
@@ -146,46 +172,10 @@ const styles = `
   .skel-circle { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
   .skel-line { height: 12px; border-radius: 6px; }
 
-  /* Modal */
-  .modal { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); width: 100%; max-width: 600px; position: relative; overflow: hidden; max-height: 90vh; overflow-y: auto; animation: modalUp 0.3s ease; }
-  @keyframes modalUp { from { opacity: 0; transform: translateY(28px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-  .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); }
-  .modal-header { padding: 24px 28px 18px; border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .modal-close { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--surface2); color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; }
-  .modal-close:hover { border-color: var(--danger); color: var(--danger); }
-  .modal-body { padding: 22px 28px 26px; display: flex; flex-direction: column; gap: 16px; }
-  .mfield { display: flex; flex-direction: column; gap: 7px; }
-  .mlabel { font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
-  .mlabel .opt { font-weight: 400; font-size: 10px; text-transform: none; margin-left: 4px; }
-  .minput, .mselect, .mtextarea { width: 100%; background: var(--surface2); border: 1px solid var(--card-border); border-radius: 11px; padding: 11px 15px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; appearance: none; }
-  .minput::placeholder, .mtextarea::placeholder { color: var(--muted); }
-  .minput:focus, .mselect:focus, .mtextarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,142,247,0.12); }
-  .mselect { cursor: pointer; }
-  .mselect option { background: #1a2035; }
-  .mtextarea { resize: vertical; min-height: 110px; line-height: 1.65; }
-  .mrow   { display: grid; grid-template-columns: 1fr 1fr;     gap: 14px; }
-  .mrow-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  .modal-footer { padding: 0 28px 26px; display: flex; gap: 10px; justify-content: flex-end; }
-  .btn-cancel { padding: 10px 22px; border-radius: 50px; border: 1px solid var(--card-border); background: transparent; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 500; cursor: pointer; transition: border-color 0.18s, color 0.18s; }
-  .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
-  .btn-submit { padding: 10px 26px; border-radius: 50px; border: none; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(79,142,247,0.35); transition: transform 0.18s, box-shadow 0.18s; }
-  .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(79,142,247,0.5); }
-  .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 5px; }
-
-  @media (max-width: 640px) {
-    .mrow-3 { grid-template-columns: 1fr; }
-    .mrow   { grid-template-columns: 1fr; }
-  }
 `;
-
-const COLORS    = ["blue", "violet", "green", "gold"];
-const AV_COLORS = ["av-blue", "av-violet", "av-green", "av-gold"];
-const FILTERS   = ["All", "Easy", "Medium", "Hard"];
 
 const MOCK = [
   { _id:"1", name:"Arjun Mehta",    company:"Flipkart",  role:"Frontend Developer",       topic:"React",                  difficulty:"Medium", experienceText:"I focused heavily on explaining my thought process while solving DSA problems. Interviewers here care more about your approach than the perfect answer. I practised STAR for behavioural rounds, which made a huge difference. The panel was impressed when I drew component diagrams before coding.", likes:34, createdAt:"May 30, 2025", color:"blue",   avatarColor:"av-blue",   avatarLetter:"A" },
@@ -196,6 +186,8 @@ const MOCK = [
   { _id:"6", name:"Divya Krishnan", company:"Swiggy",    role:"UI/UX Designer",            topic:"Design Thinking",        difficulty:"Easy",   experienceText:"The design interview had a portfolio review and a live challenge — redesign an ATM flow in 30 minutes. I verbalized my thinking throughout and asked clarifying questions about target users. They valued empathy-driven design over pixel-perfect work.", likes:47, createdAt:"May 17, 2025", color:"violet", avatarColor:"av-violet", avatarLetter:"D" },
 ];
 
+const FILTERS = ["All", "Easy", "Medium", "Hard"];
+
 export default function ExperiencePage() {
   const navigate = useNavigate();
   const [experiences, setExperiences] = useState([]);
@@ -203,9 +195,7 @@ export default function ExperiencePage() {
   const [filter, setFilter]           = useState("All");
   const [search, setSearch]           = useState("");
   const [likedIds, setLikedIds]       = useState(new Set());
-  const [showModal, setShowModal]     = useState(false);
-  const [submitting, setSubmitting]   = useState(false);
-  const [form, setForm]               = useState(EMPTY_FORM);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -243,106 +233,58 @@ export default function ExperiencePage() {
     );
   };
 
-  const handleFormChange = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-  const allValid = REQUIRED_KEYS.every(k => form[k]);
-
-  const handleAddSubmit = async () => {
-    if (!allValid) return;
-    setSubmitting(true);
-    try {
-      const colorIdx = Math.floor(Math.random() * 4);
-      const newEntry = {
-        ...form,
-        _id:         Date.now().toString(),
-        likes:       0,
-        createdAt:   new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-        color:       COLORS[colorIdx],
-        avatarColor: AV_COLORS[colorIdx],
-        avatarLetter: (form.name || form.company)[0].toUpperCase(),
-      };
-      // await axios.post("http://localhost:5000/experiences", { ...form, name: form.name || undefined }, { withCredentials: true });
-      setExperiences(prev => [newEntry, ...prev]);
-      setForm(EMPTY_FORM);
-      setShowModal(false);
-    } catch {
-      alert("Failed to submit. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <>
       <style>{styles}</style>
 
-      {/* Modal — outside exp-root so overflow-x:hidden doesn't trap fixed positioning */}
-      {showModal && (
+      {/* Detail Modal */}
+      {selectedItem && (
         <div
-          onClick={e => e.target === e.currentTarget && setShowModal(false)}
-          style={{ position:"fixed", inset:0, zIndex:9999, background:"rgba(0,0,0,0.75)", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", justifyContent:"center", padding:"20px" }}
+          className="detail-overlay"
+          onClick={e => e.target === e.currentTarget && setSelectedItem(null)}
         >
-          <div className="modal">
-            <div className="modal-header">
-              <div className="modal-title">Share Your Experience</div>
-              <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
+          <div className="detail-modal">
+            <div className={`detail-modal-bar bar-${selectedItem.color || "blue"}`} />
+
+            <div className="detail-modal-header">
+              <div className="detail-modal-user">
+                <div className={`detail-avatar-lg ${selectedItem.avatarColor || "av-blue"}`}>
+                  {selectedItem.avatarLetter || selectedItem.name?.[0]?.toUpperCase() || "U"}
+                </div>
+                <div>
+                  <div className="detail-name">{selectedItem.name || "Anonymous"}</div>
+                  <div className="detail-date">{selectedItem.createdAt}</div>
+                </div>
+              </div>
+              <button className="detail-close" onClick={() => setSelectedItem(null)}>✕</button>
             </div>
 
-            <div className="modal-body">
-              {/* Row 1: Name · Company · Role */}
-              <div className="mrow-3">
-                <div className="mfield">
-                  <label className="mlabel">Name <span className="opt">(optional)</span></label>
-                  <input className="minput" placeholder="e.g. Priya Sharma"
-                    value={form.name} onChange={e => handleFormChange("name", e.target.value)} />
-                </div>
-                <div className="mfield">
-                  <label className="mlabel">Company *</label>
-                  <input className="minput" placeholder="e.g. Google, Amazon"
-                    value={form.company} onChange={e => handleFormChange("company", e.target.value)} />
-                </div>
-                <div className="mfield">
-                  <label className="mlabel">Role Applied For *</label>
-                  <input className="minput" placeholder="e.g. Frontend Developer"
-                    value={form.role} onChange={e => handleFormChange("role", e.target.value)} />
-                </div>
+            <div className="detail-modal-body">
+              <div className="detail-meta-row">
+                <div className="detail-role">💼 {selectedItem.role}</div>
+                {selectedItem.company && <div className="detail-company">🏢 {selectedItem.company}</div>}
+                <span className={`detail-diff-tag tag-${selectedItem.difficulty?.toLowerCase()}`}>
+                  {selectedItem.difficulty}
+                </span>
               </div>
 
-              {/* Row 2: Topic · Difficulty */}
-              <div className="mrow">
-                <div className="mfield">
-                  <label className="mlabel">Topic / Stack *</label>
-                  <input className="minput" placeholder="e.g. React, Python, DSA"
-                    value={form.topic} onChange={e => handleFormChange("topic", e.target.value)} />
-                </div>
-                <div className="mfield">
-                  <label className="mlabel">Difficulty *</label>
-                  <select className="mselect" value={form.difficulty} onChange={e => handleFormChange("difficulty", e.target.value)}>
-                    <option value="">-- Select --</option>
-                    <option value="Easy">🟢 Easy</option>
-                    <option value="Medium">🟡 Medium</option>
-                    <option value="Hard">🔴 Hard</option>
-                  </select>
-                </div>
-              </div>
+              {selectedItem.topic && (
+                <div className="detail-topic-badge">#{selectedItem.topic}</div>
+              )}
 
-              {/* Experience text */}
-              <div className="mfield">
-                <label className="mlabel">Your Experience & Strategy *</label>
-                <textarea
-                  className="mtextarea"
-                  placeholder="Describe how you prepared, what worked, what surprised you, tips for others…"
-                  value={form.experienceText}
-                  onChange={e => handleFormChange("experienceText", e.target.value)}
-                />
-              </div>
+              <div className="detail-section-label">Experience & Strategy</div>
+              <p className="detail-experience-text">{selectedItem.experienceText}</p>
             </div>
 
-            <div className="modal-footer">
-              <button className="btn-cancel" onClick={() => { setForm(EMPTY_FORM); setShowModal(false); }}>Cancel</button>
-              <button className="btn-submit" onClick={handleAddSubmit} disabled={!allValid || submitting}>
-                {submitting ? "Posting…" : "Post Experience ✦"}
+            <div className="detail-modal-footer">
+              <button
+                className={`detail-likes-btn ${likedIds.has(selectedItem._id) ? "liked" : ""}`}
+                onClick={() => toggleLike(selectedItem._id)}
+              >
+                {likedIds.has(selectedItem._id) ? "❤️" : "🤍"}
+                {experiences.find(e => e._id === selectedItem._id)?.likes ?? selectedItem.likes} helpful
               </button>
+              <div className="detail-quote-deco">"</div>
             </div>
           </div>
         </div>
@@ -473,7 +415,6 @@ export default function ExperiencePage() {
 
                   {item.topic && <div className="card-topic-badge">#{item.topic}</div>}
 
-                  {/* experienceText — renamed from experience */}
                   <div className="card-body">{item.experienceText}</div>
 
                   <div className="card-footer">
@@ -483,7 +424,7 @@ export default function ExperiencePage() {
                     >
                       {likedIds.has(item._id) ? "❤️" : "🤍"} {item.likes}
                     </button>
-                    <span className="read-more">Read more →</span>
+                    <span className="read-more" onClick={() => setSelectedItem(item)}>Read more →</span>
                   </div>
                 </div>
               ))
