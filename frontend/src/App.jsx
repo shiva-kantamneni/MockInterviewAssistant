@@ -10,7 +10,7 @@ import ChatScreen from './ChatScreen';
 import ExperiencePage from './ExperiencePage';
 import ProfilePage from './ProfilePage';
 import ShareExperiencePage from './Shareexperiencepage';
-import SessionHistory from './SessionHistory';
+import SessionHistory from './Sessionhistory';
 function App() {
   return (
     <BrowserRouter>
