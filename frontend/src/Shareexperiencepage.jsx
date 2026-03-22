@@ -358,7 +358,7 @@ export default function ShareExperiencePage() {
     if (!allValid) return;
     setSubmitting(true);
     try {
-      await axios.post(`{API}/shareEx/shareExperience`, {
+      await axios.post(`${API}/shareEx/shareExperience`, {
         name:           form.name || undefined,   // optional
         company:        form.company,
         role:           form.role,

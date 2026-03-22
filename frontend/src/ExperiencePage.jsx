@@ -200,7 +200,7 @@ export default function ExperiencePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const { data } = await axios.get(`{API}/shareEx/interviews`, { withCredentials: true });
+        const { data } = await axios.get(`${API}/shareEx/interviews`, { withCredentials: true });
         setExperiences(Array.isArray(data) ? data : MOCK);
       } catch {
         setExperiences(MOCK);
