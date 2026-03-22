@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import StartInterviewForm from './StartInterviewForm';
 import Webcam from 'react-webcam';
-
+const API = import.meta.env.VITE_API_URL;
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -514,7 +514,7 @@ export default function InterviewApp() {
 
   const handleFormSubmit = async ({ topic, role, difficulty, customQuestion }) => {
     try {
-      const response = await fetch('http://localhost:5000/interview/generate-questions', {
+      const response = await fetch(`{API}/interview/generate-questions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic, role, difficulty, customQuestion }),

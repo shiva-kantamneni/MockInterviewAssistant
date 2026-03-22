@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-
+const API = import.meta.env.VITE_API_URL;
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -135,7 +135,7 @@ const Dashboard = () => {
     } catch { navigate("/"); }
 
     try {
-      const res = await axios.get("http://localhost:5000/history/sessions", {
+      const res = await axios.get(`{API}/history/sessions`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRecentSessions((res.data.sessions || []).slice(0, 3));
@@ -153,7 +153,7 @@ const Dashboard = () => {
     const formData = new FormData();
     formData.append("resume", file);
     try {
-      const res = await axios.post("http://localhost:5000/interview/upload-resume", formData, {
+      const res = await axios.post(`{API}/interview/upload-resume`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/chat", { state: { resumeText: res.data.text, fileName: file.name } });
