@@ -4,7 +4,7 @@ import axios from "axios";
 
 const COLORS    = ["blue", "violet", "green", "gold"];
 const AV_COLORS = ["av-blue", "av-violet", "av-green", "av-gold"];
-
+const API = import.meta.env.VITE_API_URL;
 // Schema: name(opt), company*, role*, topic*, difficulty*, experienceText*
 const EMPTY_FORM = {
   name:           "",
@@ -358,7 +358,7 @@ export default function ShareExperiencePage() {
     if (!allValid) return;
     setSubmitting(true);
     try {
-      await axios.post("http://localhost:5000/shareEx/shareExperience", {
+      await axios.post(`{API}/shareEx/shareExperience`, {
         name:           form.name || undefined,   // optional
         company:        form.company,
         role:           form.role,
