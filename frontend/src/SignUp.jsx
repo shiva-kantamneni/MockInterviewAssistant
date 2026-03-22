@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
+const API = import.meta.env.VITE_API_URL;
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -170,7 +170,7 @@ export default function SignUp() {
     setErrorMsg("");
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/user/signup', { name, email, password }, { withCredentials: true });
+      await axios.post(`${API}/user/signup`, { name, email, password }, { withCredentials: true });
       navigate('/');
     } catch (err) {
       if (err?.response?.status === 400) {
