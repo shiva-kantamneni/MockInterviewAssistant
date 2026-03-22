@@ -13,14 +13,15 @@ const ShareRouter   = require('./API/shareExperience');
 const SessionRouter = require('./API/history');
 
 const app = express();
-app.use(express.json());
-
-// FIX 3: added PATCH to allowed methods
 app.use(cors({
-  origin:      'http://localhost:5173',
+  origin:     [ 'http://localhost:5173', "https://mock-interview-assistant-phi.vercel.app"],
   methods:     ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],   // ← PATCH was missing
   credentials: true,
 }));
+
+app.use(express.json());
+
+// FIX 3: added PATCH to allowed methods
 
 app.use('/user',     UserRouter);
 app.use('/interview', ChatRouter);
