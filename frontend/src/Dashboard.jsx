@@ -135,7 +135,7 @@ const Dashboard = () => {
     } catch { navigate("/"); }
 
     try {
-      const res = await axios.get('http://localhost:5173/history/sessions', {
+      const res = await axios.get('http://localhost:5000/history/sessions', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRecentSessions((res.data.sessions || []).slice(0, 3));
@@ -153,7 +153,7 @@ const Dashboard = () => {
     const formData = new FormData();
     formData.append("resume", file);
     try {
-      const res = await axios.post('http://localhost:5173/interview/upload-resume', formData, {
+      const res = await axios.post('http://localhost:5000/interview/upload-resume', formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/chat", { state: { resumeText: res.data.text, fileName: file.name } });

@@ -514,7 +514,7 @@ export default function InterviewApp() {
 
   const handleFormSubmit = async ({ topic, role, difficulty, customQuestion }) => {
     try {
-      const response = await fetch('http://localhost:5173/interview/generate-questions', {
+      const response = await fetch('http://localhost:5000/interview/generate-questions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic, role, difficulty, customQuestion }),

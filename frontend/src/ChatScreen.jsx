@@ -6,8 +6,8 @@ import axios from "axios";
 // const API = import.meta.env.VITE_API_URL;
 // const BASE_URL    = `${API}/interview;
 // const HISTORY_URL = `${API}/history`;
-const BASE_URL='http://localhost:5173/interview';
-const HISTORY_URL='http://localhost:5173/history';
+const BASE_URL='http://localhost:5000/interview';
+const HISTORY_URL='http://localhost:5000/history';
 
 const authHeader = () => {
   const t = localStorage.getItem("token");

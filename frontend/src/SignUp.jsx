@@ -169,8 +169,10 @@ export default function SignUp() {
     if (!email) { setErrorMsg("Please enter your email."); return; }
     setErrorMsg("");
     setLoading(true);
+    
     try {
-      await axios.post('http://localhost:5173/user/signup', { name, email, password }, { withCredentials: true });
+      await axios.post('http://localhost:5000/user/signup', { name, email, password }, { withCredentials: true });
+      console.log("hii");
       navigate('/');
     } catch (err) {
       if (err?.response?.status === 400) {
