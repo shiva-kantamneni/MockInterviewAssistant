@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from 'axios';
-const API = import.meta.env.VITE_API_URL;
+// const API = import.meta.env.VITE_API_URL;
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -134,7 +134,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${API}/user/signin`,
+        'http://localhost:5173/user/signin',
         { email, password },
         { withCredentials: true }
       );

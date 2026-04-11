@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const API = import.meta.env.VITE_API_URL;
+// const API = import.meta.env.VITE_API_URL;
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
@@ -200,7 +200,7 @@ export default function ExperiencePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const { data } = await axios.get(`${API}/shareEx/interviews`, { withCredentials: true });
+        const { data } = await axios.get('http://localhost:5173/shareEx/interviews', { withCredentials: true });
         setExperiences(Array.isArray(data) ? data : MOCK);
       } catch {
         setExperiences(MOCK);

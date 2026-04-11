@@ -3,9 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL;
-const BASE_URL    = `${API}/interview`;
-const HISTORY_URL = `${API}/history`;
+// const API = import.meta.env.VITE_API_URL;
+// const BASE_URL    = `${API}/interview;
+// const HISTORY_URL = `${API}/history`;
+const BASE_URL='http://localhost:5173/interview';
+const HISTORY_URL='http://localhost:5173/history';
 
 const authHeader = () => {
   const t = localStorage.getItem("token");
